@@ -1,8 +1,13 @@
-﻿using Bogus;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Bogus;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Protected;
 using TechnicalShowcase.Services.Api;
-using TechnicalShowcase.Services.Wrappers;
 
 namespace TechnicalShowcase.Tests.Services.Api
 {
@@ -10,7 +15,8 @@ namespace TechnicalShowcase.Tests.Services.Api
     public class ApiClientTest
     {
         private ApiClient _apiClient;
-        private Mock<IHttpClientWrapper> _httpClientMock;
+        private HttpClient _httpClient;
+        private Mock<HttpMessageHandler> _messageHandlerMock;
         private Randomizer _random;
 
         [TestInitialize]
@@ -18,21 +24,41 @@ namespace TechnicalShowcase.Tests.Services.Api
         {
             _random = new Randomizer();
 
-            _httpClientMock = new Mock<IHttpClientWrapper>();
-            _apiClient = new ApiClient(_httpClientMock.Object);
+            _messageHandlerMock = new Mock<HttpMessageHandler>();
+            _httpClient = new HttpClient(_messageHandlerMock.Object);
+
+            _apiClient = new ApiClient(_httpClient);
         }
 
         [TestClass]
         public class GetTest : ApiClientTest
         {
-            [TestMethod]
-            public void ShouldCallHttpClientWrapperWithUriPassedAsParameter()
+            private string _expectedUrl;
+            private string _expectedResponseMessage;
+
+            [TestInitialize]
+            public void BeforeEachGet()
             {
-                var expectedUri = _random.Word();
+                _expectedUrl = new Bogus.DataSets.Internet().Url();
+                _expectedResponseMessage = _random.Words();
 
-                _apiClient.Get<object>(expectedUri);
+                _messageHandlerMock.Protected()
+                    .Setup<Task<HttpResponseMessage>>("SendAsync", 
+                        ItExpr.Is<HttpRequestMessage>(message => message.RequestUri.OriginalString == _expectedUrl),
+                        ItExpr.IsAny<CancellationToken>())
+                    .ReturnsAsync(new HttpResponseMessage
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        Content = new StringContent(_expectedResponseMessage)
+                    });
+            }
 
-                _httpClientMock.Verify(client => client.GetAsync(expectedUri), Times.Once);
+            [TestMethod]
+            public async Task ShouldCallHttpClientFactoryToCreateANewHttpClient()
+            {
+                var actualResponse = await _apiClient.Get<string>(_expectedUrl);
+
+                actualResponse.Should().Be(_expectedResponseMessage);
             }
         }
     }

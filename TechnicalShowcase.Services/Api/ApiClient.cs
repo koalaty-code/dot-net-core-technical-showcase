@@ -1,32 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using TechnicalShowcase.Services.Wrappers;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace TechnicalShowcase.Services.Api
 {
     public interface IApiClient
     {
-        T Get<T>(string uri) where T : class;
-        IEnumerable<T> GetAll<T>(string uri) where T : class;
+        Task<T> Get<T>(string uri) where T : class;
     }
     public class ApiClient : IApiClient
     {
-        private readonly IHttpClientWrapper _httpClient;
+        private readonly HttpClient _httpClient;
 
-        public ApiClient(IHttpClientWrapper httpClient)
+        public ApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public T Get<T>(string uri) where T : class
+        public async Task<T> Get<T>(string uri) where T : class
         {
-            _httpClient.GetAsync(uri);
-            return null;
-        }
-
-        public IEnumerable<T> GetAll<T>(string uri) where T : class
-        {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync(uri);
+            return await response.Content.ReadAsStringAsync() as T;
         }
     }
 }
