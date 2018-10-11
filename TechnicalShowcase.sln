@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalShowcase", "TechnicalShowcase\TechnicalShowcase.csproj", "{1C7F2ADD-7464-4F3D-9C3B-025E779754A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalShowcase.Data", "..\TechnicalShowcase.Data\TechnicalShowcase.Data.csproj", "{66AEA68E-D878-4201-863A-6E58D1AB2116}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalShowcase.Data", "TechnicalShowcase.Data\TechnicalShowcase.Data.csproj", "{66AEA68E-D878-4201-863A-6E58D1AB2116}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalShowcase.Services", "TechnicalShowcase.Services\TechnicalShowcase.Services.csproj", "{5FB28955-ED4C-4CBC-8102-848ED9E98338}"
 EndProject
