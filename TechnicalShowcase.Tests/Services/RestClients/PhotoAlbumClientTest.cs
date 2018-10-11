@@ -7,14 +7,14 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-using TechnicalShowcase.Services.Api;
+using TechnicalShowcase.Services.RestClients;
 
-namespace TechnicalShowcase.Tests.Services.Api
+namespace TechnicalShowcase.Tests.Services.RestClients
 {
     [TestClass]
-    public class ApiClientTest
+    public class PhotoAlbumClientTest
     {
-        private ApiClient _apiClient;
+        private PhotoAlbumClient _albumClient;
         private HttpClient _httpClient;
         private Mock<HttpMessageHandler> _messageHandlerMock;
         private Randomizer _random;
@@ -27,11 +27,11 @@ namespace TechnicalShowcase.Tests.Services.Api
             _messageHandlerMock = new Mock<HttpMessageHandler>();
             _httpClient = new HttpClient(_messageHandlerMock.Object);
 
-            _apiClient = new ApiClient(_httpClient);
+            _albumClient = new PhotoAlbumClient(_httpClient);
         }
 
         [TestClass]
-        public class GetTest : ApiClientTest
+        public class GetTest : PhotoAlbumClientTest
         {
             private string _expectedUrl;
             private string _expectedResponseMessage;
@@ -56,7 +56,7 @@ namespace TechnicalShowcase.Tests.Services.Api
             [TestMethod]
             public async Task ShouldCallHttpClientFactoryToCreateANewHttpClient()
             {
-                var actualResponse = await _apiClient.Get<string>(_expectedUrl);
+                var actualResponse = await _albumClient.Get<string>(_expectedUrl);
 
                 actualResponse.Should().Be(_expectedResponseMessage);
             }

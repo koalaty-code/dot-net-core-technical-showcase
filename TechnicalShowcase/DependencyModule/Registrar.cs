@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TechnicalShowcase.Services.Api;
+using TechnicalShowcase.Services.RestClients;
 
 namespace TechnicalShowcase.DependencyModule
 {
@@ -7,7 +7,7 @@ namespace TechnicalShowcase.DependencyModule
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.AddHttpClient<IApiClient, ApiClient>();
+            services.AddHttpClient<IPhotoAlbumClient, PhotoAlbumClient>();
         }
     }
 }

@@ -1,17 +1,17 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace TechnicalShowcase.Services.Api
+namespace TechnicalShowcase.Services.RestClients
 {
-    public interface IApiClient
+    public interface IPhotoAlbumClient
     {
         Task<T> Get<T>(string uri) where T : class;
     }
-    public class ApiClient : IApiClient
+    public class PhotoAlbumClient : IPhotoAlbumClient
     {
         private readonly HttpClient _httpClient;
 
-        public ApiClient(HttpClient httpClient)
+        public PhotoAlbumClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
