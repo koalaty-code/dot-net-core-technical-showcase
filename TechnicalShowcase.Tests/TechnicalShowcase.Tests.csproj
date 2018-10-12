@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TechnicalShowcase.Data\TechnicalShowcase.Data.csproj" />
     <ProjectReference Include="..\TechnicalShowcase.Services\TechnicalShowcase.Services.csproj" />
   </ItemGroup>
 
