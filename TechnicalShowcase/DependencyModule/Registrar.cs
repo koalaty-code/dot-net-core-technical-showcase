@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using TechnicalShowcase.Services;
 using TechnicalShowcase.Services.RestClients;
 using TechnicalShowcase.Services.Wrappers;
 
@@ -8,8 +10,11 @@ namespace TechnicalShowcase.DependencyModule
     {
         public static void RegisterServices(this IServiceCollection services)
         {
+            services.AddScoped<IHostedService, PhotoAlbumRunner>();
             services.AddHttpClient<IPhotoAlbumClient, PhotoAlbumClient>();
-            services.AddScoped<IJsonConvertWrapper, JsonConvertWrapper>();
+
+            services.AddSingleton<IJsonConvertWrapper, JsonConvertWrapper>();
+            services.AddSingleton<IConsoleWrapper, ConsoleWrapper>();
         }
     }
 }
