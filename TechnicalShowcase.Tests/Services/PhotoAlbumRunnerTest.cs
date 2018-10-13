@@ -74,7 +74,7 @@ namespace TechnicalShowcase.Tests.Services
             [TestMethod]
             public async Task ShouldWriteInvalidInputMessageIfReadLineReturnsInvalidIntegerAndNotQuit()
             {
-                _expectedReadLineQueue = new Queue<string>(new [] {_random.Word(), "Q"});
+                _expectedReadLineQueue = new Queue<string>(new[] { _random.Word(), "Q" });
 
                 await _runner.Run();
 
@@ -91,6 +91,17 @@ namespace TechnicalShowcase.Tests.Services
             }
 
             [TestMethod]
+            public async Task ShouldWriteNoPhotosFoundMessageIfAlbumIdReturnsNoPhotos()
+            {
+                var expectedAlbumId = _random.Number().ToString();
+                _expectedReadLineQueue = new Queue<string>(new[] { expectedAlbumId, "Q" });
+
+                await _runner.Run();
+
+                _consoleWrapperMock.Verify(con => con.WriteLine($"No photos found for albumId={expectedAlbumId}"));
+            }
+
+            [TestMethod]
             public async Task ShouldReadLineUntilQuitCharacterIsRead()
             {
                 var expectedCallCount = _expectedReadLineQueue.Count;
@@ -103,7 +114,7 @@ namespace TechnicalShowcase.Tests.Services
             [TestMethod]
             public async Task ShouldIgnoreCaseOfQuitCommand()
             {
-                _expectedReadLineQueue = new Queue<string>(new [] {"q"});
+                _expectedReadLineQueue = new Queue<string>(new[] { "q" });
 
                 await _runner.Run();
 

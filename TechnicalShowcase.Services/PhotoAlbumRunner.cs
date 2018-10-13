@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TechnicalShowcase.Services.RestClients;
 using TechnicalShowcase.Services.Wrappers;
@@ -27,7 +28,7 @@ namespace TechnicalShowcase.Services
             _consoleWrapper.WriteLine("Welcome to the Photo Album runner. Enter an Album ID to search for photos or \"Q\" to quit.");
             _consoleWrapper.Write(Prompt);
 
-            
+
             var input = _consoleWrapper.ReadLine();
             while (!string.Equals(input, "Q", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -38,6 +39,8 @@ namespace TechnicalShowcase.Services
                 else
                 {
                     var photos = await _photoAlbumClient.GetPhotosByAlbum(albumId);
+
+                    if (!photos.Any()) _consoleWrapper.WriteLine($"No photos found for albumId={albumId}");
 
                     foreach (var photo in photos)
                     {
