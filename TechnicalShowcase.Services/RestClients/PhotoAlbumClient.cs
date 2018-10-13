@@ -27,10 +27,10 @@ namespace TechnicalShowcase.Services.RestClients
 
         public async Task<List<Photo>> GetPhotosByAlbum(int albumId)
         {
-            var response = await _httpClient.GetAsync($"{RootPhotoUri}?album={albumId}");
+            var response = await _httpClient.GetAsync($"{RootPhotoUri}?albumId={albumId}");
 
             if (response.StatusCode != HttpStatusCode.OK)
-                throw new Exception("The Photo Album API cannot be reached at this time.");
+                throw new Exception("There was a problem communicating with the Photo Album API. Please try again later.");
 
             var content = await response.Content.ReadAsStringAsync();
             return _jsonWrapper.Deserialize<List<Photo>>(content);

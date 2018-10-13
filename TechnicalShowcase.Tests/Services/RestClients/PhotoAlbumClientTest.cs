@@ -52,7 +52,7 @@ namespace TechnicalShowcase.Tests.Services.RestClients
             public void BeforeEachGet()
             {
                 _expectedAlbumId = _random.Number();
-                _expectedGetPhotosUrl = $"{RootUrl}?album={_expectedAlbumId}";
+                _expectedGetPhotosUrl = $"{RootUrl}?albumId={_expectedAlbumId}";
                 _expectedResponseContent = _random.Words();
                 _expectedPhotos = _testPhotos.Generate(5);
                 _expectedResponseMessage = new HttpResponseMessage
@@ -80,11 +80,30 @@ namespace TechnicalShowcase.Tests.Services.RestClients
 
             [TestMethod]
             [ExpectedException(typeof(Exception))]
-            public async Task ShouldThrowExceptionWithMessageThatApiCannotBeReached()
+            public async Task ShouldThrowExceptionIfResponseStatusIsNotOk()
             {
                 _expectedResponseMessage.StatusCode = HttpStatusCode.BadRequest;
 
                 await _albumClient.GetPhotosByAlbum(_expectedAlbumId);
+            }
+
+            [TestMethod]
+            public async Task ShouldThrowExceptionWithMessageThatApiCouldNotBeReachedSuccessfully()
+            {
+                const string expectedErrorMessage = "There was a problem communicating with the Photo Album API. Please try again later.";
+                _expectedResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+
+                try
+                {
+                    await _albumClient.GetPhotosByAlbum(_expectedAlbumId);
+                }
+                catch (Exception ex)
+                {
+                    ex.Message.Should().Be(expectedErrorMessage);
+                    return;
+                }
+
+                true.Should().Be(false);
             }
         }
     }

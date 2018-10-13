@@ -7,5 +7,10 @@
         public string Url { get; set; }
         public string ThumbnailUrl { get; set; }
         public int AlbumId { get; set; }
+
+        public override string ToString()
+        {
+            return $"[{Id}] {Title}";
+        }
     }
 }

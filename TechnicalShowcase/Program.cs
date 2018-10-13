@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TechnicalShowcase.DependencyModule;
+using TechnicalShowcase.Services;
 
 namespace TechnicalShowcase
 {
@@ -9,21 +10,21 @@ namespace TechnicalShowcase
     {
         public static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var services = new ServiceCollection();
+            services.RegisterServices();
 
-            var host = new HostBuilder()
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.RegisterServices();
-                });
+            var serviceProvider = services.BuildServiceProvider();
+            var runner = serviceProvider.GetService<IPhotoAlbumRunner>();
 
             try
             {
-                await host.RunConsoleAsync();
+                await runner.Run();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                Console.WriteLine(ex.Message);
+                Console.Write("Press any key to quit.");
+                Console.ReadLine();
             }
         }
     }
