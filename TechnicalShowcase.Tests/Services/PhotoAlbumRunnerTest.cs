@@ -58,7 +58,7 @@ namespace TechnicalShowcase.Tests.Services
 
                 _consoleWrapperMock.Verify(con =>
                     con.WriteLine(
-                        "Welcome to the Photo Album runner. Enter an albumId to search for photos or \"Q\" to quit."));
+                        "Welcome to the Photo Album runner. Enter an Album ID to search for photos or \"Q\" to quit."));
             }
 
             [TestMethod]

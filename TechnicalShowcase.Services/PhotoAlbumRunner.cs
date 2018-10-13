@@ -24,7 +24,7 @@ namespace TechnicalShowcase.Services
 
         public async Task Run()
         {
-            _consoleWrapper.WriteLine("Welcome to the Photo Album runner. Enter an albumId to search for photos or \"Q\" to quit.");
+            _consoleWrapper.WriteLine("Welcome to the Photo Album runner. Enter an Album ID to search for photos or \"Q\" to quit.");
             _consoleWrapper.Write(Prompt);
 
             
